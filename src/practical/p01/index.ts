@@ -24,7 +24,7 @@ async function getEdgePosts() {
       title: lastPost.title
     };
 
-    return [formattedFirstPost, formattedLastPost];
+    return new Array (formattedFirstPost, formattedLastPost);
 
   } catch (error) {
     return null; 
