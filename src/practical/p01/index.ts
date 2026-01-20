@@ -9,8 +9,7 @@ export const getEdgePosts = async (): Promise<PostResult[]> => {
     
     if (data.length === 0) return [];
 
-    return [data[0], data[data.length - 1]]
-      .map(({ id, title }) => ({ id, title }));
+    return [data[0], data[data.length - 1]].map(({ id, title }) => ({ id, title }));
 
   } catch (error) {
     throw new Error(axios.isAxiosError(error) ? error.message : 'Unknown Error');
