@@ -1,33 +1,18 @@
-async function getEdgePosts() {
-  const apiUrl = 'https://jsonplaceholder.typicode.com/posts';
+import axios from 'axios';
 
+interface ApiResult { id: number; title: string; }
+interface PostResult { id: number; title: string; }
+
+export const getEdgePosts = async (): Promise<PostResult[]> => {
   try {
-    const response = await fetch(apiUrl);
-    if (!response.ok) {
-      throw new Error(`error: ${response.status}`);
-    }
-    const posts = await response.json();
+    const { data } = await axios.get<ApiResult[]>('https://jsonplaceholder.typicode.com/posts');
+    
+    if (data.length === 0) return [];
 
-    if (posts.length === 0) {
-      return []; 
-    }
-    const firstPost = posts[0];
-    const lastPost = posts[posts.length - 1];
-
-    const formattedFirstPost = {
-      id: firstPost.id,
-      title: firstPost.title
-    };
-
-    const formattedLastPost = {
-      id: lastPost.id,
-      title: lastPost.title
-    };
-
-    return new Array (formattedFirstPost, formattedLastPost);
+    return [data[0], data[data.length - 1]]
+      .map(({ id, title }) => ({ id, title }));
 
   } catch (error) {
-    return null; 
+    throw new Error(axios.isAxiosError(error) ? error.message : 'Unknown Error');
   }
-}
-getEdgePosts()
+};
